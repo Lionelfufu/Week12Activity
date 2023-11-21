@@ -1,28 +1,17 @@
 /**
- * @description Find tests that call function call 'pressActionKey'
+ * @description Find fucntions called 'pressActionKey'
  * @kind problem
- * @id javascript/tests-call-pressActionKey
+ * @id javascript/function-called-pressActionKey
  * @problem.severity recommendation
  */
 import javascript
 
-predicate isTest(Function test) {
-  exists(CallExpr describe, CallExpr it |
-    describe.getCalleeName() = "describe" and
-    it.getCalleeName() = "it" and
-    it.getParent*() = describe and
-    test = it.getArgument(1)
-  )
+
+predicate isFunctionCalledPressActionKey(Function f) {
+  f.getName() = "pressActionKey"
 }
 
-predicate callsPressActionKey(Function test) {
-  exists(CallExpr call |
-    call.getEnclosingFunction() = caller and
-    call.getACallee().getName() = "pressActionKey"
-  )
-}
 
-from Function test
-where isTest(test) and
-      callsPressActionKey(test)
+from Function f
+where isFunctionCalledPressActionKey(f)
 select test, "This test calls the function 'pressActionKey'."
