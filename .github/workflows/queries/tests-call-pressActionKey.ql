@@ -6,6 +6,15 @@
  */
 import javascript
 
+predicate isTest(Function test) {
+  exists(CallExpr describe, CallExpr it |
+    describe.getCalleeName() = "describe" and
+    it.getCalleeName() = "it" and
+    it.getParent*() = describe and
+    test = it.getArgument(1)
+  )
+}
+
 predicate isPressActionKeyFunction(Function f) {
   f.getName() = "pressActionKey"
 }
@@ -18,5 +27,6 @@ predicate testCallsPressActionKey(Function test) {
 }
 
 from Function test
-where testCallsPressActionKey(test)
+where isTest(test) and
+      testCallsPressActionKey(test)
 select test, "This test calls the function 'pressActionKey'."
