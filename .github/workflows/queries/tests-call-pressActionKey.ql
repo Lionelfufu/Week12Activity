@@ -19,15 +19,12 @@ predicate isTest(Function test) {
   )
 }
 
-predicate isPressActionKeyFunction(Function f) {
-  f.getName() = "pressActionKey"
-}
 
 
 predicate testCallsPressActionKey(Function test) {
   exists(CallExpr call |
     call.getEnclosingFunction() = test and
-    isPressActionKeyFunction(call.getACallee())
+    call.getCalleeName() = "pressActionKey"
   )
 }
 
