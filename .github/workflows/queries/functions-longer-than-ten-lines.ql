@@ -1,27 +1,15 @@
 /**
- * @description Find functions that are public method
+ * @description Find functions that are longer than ten lines of code
  * @kind problem
- * @id javascript/functions-public-method
+ * @id javascript/functions-longer-than-ten-lines
  * @problem.severity recommendation
  */
 import javascript
 
-/**
-   * Holds if the given function is a public method of a class.
-   */
-  predicate isPublicMethod(Function f) {
-    exists(MethodDefinition md | md.isPublic() and md.getBody() = f)
+predicate isFunctionLongerThanTenLines(Function f) {
+  f.getNumLines() > 10
 }
-  /**
-  * Holds if the given function is exported from a module.
-  */
-  predicate isExportedFunction(Function f) {
-    exists(Module m | m.getAnExportedValue(_).getAFunctionValue().getFunction() =
-  f) and
-    not f.inExternsFile()
-  }
 
 from Function f
-where isPublicMethod(f) and
-      isExportedFunction(f)
-select f, "This function is a public method"
+where isFunctionLongerThanTenLines(f)
+select f, "This function has more than 10 lines. "
